@@ -183,8 +183,11 @@ let syncMsg = "";
 let saveTimer = null;
 
 // --- Firestore helpers ---
+// Shared data - all users read/write under the owner's UID
+const OWNER_UID = "nIEqm9HQxuOUKGX786ynOR7d4Kj2";
+
 function docRef() {
-  return db.collection("users").doc(currentUser.uid).collection("years").doc(String(yr));
+  return db.collection("users").doc(OWNER_UID).collection("years").doc(String(yr));
 }
 
 async function loadFromFirestore() {
