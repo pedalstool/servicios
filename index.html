@@ -9,31 +9,17 @@
   body { font-family: system-ui, -apple-system, sans-serif; background: #0f1117; color: #e8e8ed; min-height: 100vh; }
   .app { max-width: 1100px; margin: 0 auto; padding: 0 16px; }
 
-  /* Sync status */
-  .sync-bar { display: flex; align-items: center; justify-content: flex-end; gap: 6px; padding: 8px 0 0; font-size: 11px; color: #555; }
-  .sync-dot { width: 6px; height: 6px; border-radius: 50%; }
+  /* Auth bar */
+  .auth-bar { display: flex; align-items: center; justify-content: flex-end; gap: 8px; padding: 10px 0 0; font-size: 12px; color: #888; }
+  .auth-bar img { width: 24px; height: 24px; border-radius: 50%; }
+  .auth-btn { background: rgba(99,102,241,0.15); border: 1px solid rgba(99,102,241,0.3); color: #a5b4fc; padding: 6px 14px; border-radius: 8px; font-size: 12px; font-weight: 600; cursor: pointer; }
+  .auth-btn:hover { background: rgba(99,102,241,0.25); }
+  .auth-btn.out { background: transparent; border-color: rgba(255,255,255,0.08); color: #666; }
+  .sync-dot { display: inline-block; width: 6px; height: 6px; border-radius: 50%; margin-right: 4px; }
   .sync-dot.ok { background: #22c55e; }
   .sync-dot.err { background: #ef4444; }
   .sync-dot.loading { background: #eab308; animation: pulse 1s infinite; }
-  @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.3; } }
-  .sync-btn { background: none; border: none; color: #666; font-size: 11px; cursor: pointer; text-decoration: underline; }
-  .sync-btn:hover { color: #a5b4fc; }
-
-  /* Setup modal */
-  .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.8); z-index: 100; display: flex; align-items: center; justify-content: center; padding: 20px; }
-  .modal { background: #1a1d27; border: 1px solid rgba(255,255,255,0.1); border-radius: 14px; padding: 28px; max-width: 460px; width: 100%; }
-  .modal h2 { font-size: 18px; margin-bottom: 16px; }
-  .modal p { font-size: 13px; color: #999; margin-bottom: 12px; line-height: 1.5; }
-  .modal label { font-size: 12px; font-weight: 600; color: #bbb; display: block; margin-bottom: 4px; margin-top: 12px; }
-  .modal input { width: 100%; padding: 8px 10px; border-radius: 7px; border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.05); color: #e8e8ed; font-size: 13px; outline: none; font-family: monospace; }
-  .modal input:focus { border-color: rgba(99,102,241,0.4); }
-  .modal-actions { display: flex; gap: 8px; margin-top: 20px; }
-  .modal-save { padding: 8px 20px; border-radius: 7px; border: none; background: #6366f1; color: #fff; font-size: 13px; font-weight: 600; cursor: pointer; }
-  .modal-save:hover { background: #5558e6; }
-  .modal-skip { padding: 8px 20px; border-radius: 7px; border: 1px solid rgba(255,255,255,0.1); background: transparent; color: #888; font-size: 13px; cursor: pointer; }
-  .modal-err { color: #ef4444; font-size: 12px; margin-top: 8px; }
-  .modal code { background: rgba(255,255,255,0.06); padding: 1px 5px; border-radius: 3px; font-size: 12px; }
-  .modal ol { font-size: 12px; color: #999; line-height: 1.7; padding-left: 18px; margin: 8px 0; }
+  @keyframes pulse { 0%,100%{opacity:1}50%{opacity:0.3} }
 
   /* Header */
   .hdr { padding: 8px 0 10px; position: sticky; top: 0; z-index: 10; background: #0f1117; }
@@ -43,20 +29,15 @@
   .ybtn { background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.08); color: #ccc; width: 32px; height: 32px; border-radius: 6px; font-size: 18px; cursor: pointer; }
   .ybtn:hover { background: rgba(255,255,255,0.1); }
   .ylbl { font-size: 16px; font-weight: 600; color: #ccc; }
-
-  /* Filters */
   .frow { display: flex; gap: 8px; margin-bottom: 12px; }
   .fbtn { padding: 6px 16px; border-radius: 16px; border: 1px solid rgba(255,255,255,0.08); background: rgba(255,255,255,0.04); color: #888; font-size: 13px; font-weight: 500; cursor: pointer; transition: all 0.2s; }
   .fbtn:hover { background: rgba(255,255,255,0.08); }
   .fbtn.on { background: rgba(99,102,241,0.15); border-color: rgba(99,102,241,0.3); color: #a5b4fc; }
-
-  /* Months */
   .mrow { display: grid; grid-template-columns: repeat(12, 1fr); gap: 3px; }
   .mbtn { padding: 8px 0; border: none; background: transparent; color: #555; font-size: 12px; font-weight: 500; cursor: pointer; border-radius: 6px; transition: all 0.15s; }
   .mbtn:hover { background: rgba(255,255,255,0.05); color: #999; }
   .mbtn.on { background: rgba(99,102,241,0.2); color: #a5b4fc; font-weight: 700; }
 
-  /* Progress */
   .prog { padding: 18px 0 6px; }
   .prog-top { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 8px; }
   .prog-lbl { font-size: 16px; font-weight: 600; color: #bbb; }
@@ -65,13 +46,11 @@
   .pfill { height: 100%; border-radius: 3px; transition: width 0.3s; }
   .done { color: #22c55e; text-align: center; font-size: 13px; font-weight: 600; margin-top: 8px; }
 
-  /* Tabs */
   .tabs { display: flex; gap: 6px; padding: 10px 0; }
   .tab { padding: 7px 18px; border-radius: 7px; border: 1px solid rgba(255,255,255,0.06); background: rgba(255,255,255,0.02); color: #666; font-size: 13px; font-weight: 500; cursor: pointer; transition: all 0.2s; }
   .tab:hover { background: rgba(255,255,255,0.05); }
   .tab.on { background: rgba(99,102,241,0.12); border-color: rgba(99,102,241,0.25); color: #a5b4fc; font-weight: 600; }
 
-  /* Cards */
   .list { padding: 6px 0; display: grid; grid-template-columns: 1fr; gap: 6px; }
   .card { border-radius: 10px; border: 1px solid rgba(255,255,255,0.06); background: rgba(255,255,255,0.03); overflow: hidden; transition: border-color 0.2s; }
   .card:hover { border-color: rgba(255,255,255,0.12); }
@@ -87,7 +66,6 @@
   .chk { width: 24px; height: 24px; border-radius: 7px; border: 2px solid rgba(255,255,255,0.12); display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; color: #fff; }
   .chk.on { background: #22c55e; border-color: #22c55e; }
 
-  /* Cost editing */
   .cost-row { padding: 0 12px 8px; }
   .cedit { background: none; border: none; color: #555; font-size: 10px; cursor: pointer; padding: 2px 0; }
   .cost-form { display: flex; gap: 6px; align-items: center; }
@@ -96,7 +74,6 @@
   .csave { padding: 4px 10px; border-radius: 5px; border: none; background: rgba(34,197,94,0.15); color: #22c55e; font-size: 12px; cursor: pointer; font-weight: 600; }
   .ccancel { padding: 4px 8px; border-radius: 5px; border: none; background: rgba(239,68,68,0.1); color: #ef4444; font-size: 12px; cursor: pointer; }
 
-  /* Chart */
   .chart-sec { padding: 16px 0; display: flex; flex-direction: column; gap: 16px; align-items: center; }
   .legend { display: flex; flex-wrap: wrap; gap: 5px; justify-content: center; max-width: 300px; }
   .legend-item { display: flex; align-items: center; gap: 3px; font-size: 10px; color: #aaa; }
@@ -107,7 +84,6 @@
   .scard-lbl { font-size: 12px; color: #777; }
   .scard-val { font-size: 17px; font-weight: 700; margin-top: 4px; }
 
-  /* Totals */
   .totals-sec { padding: 12px 0; display: flex; flex-direction: column; gap: 14px; }
   .tgrp { padding: 14px; border-radius: 10px; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.06); }
   .tgtitle { font-size: 12px; font-weight: 600; color: #888; margin-bottom: 10px; }
@@ -118,14 +94,21 @@
   .trow.grand .trow-name { font-weight: 700; color: #e8e8ed; }
   .trow.grand .trow-val { font-weight: 700; color: #6366f1; }
 
-  /* Reset */
-  .footer { padding: 20px 0 30px; text-align: center; display: flex; gap: 10px; justify-content: center; align-items: center; }
+  .footer { padding: 20px 0 30px; text-align: center; display: flex; gap: 10px; justify-content: center; }
   .rst { padding: 7px 18px; border-radius: 7px; border: 1px solid rgba(239,68,68,0.15); background: rgba(239,68,68,0.06); color: #ef4444; font-size: 11px; cursor: pointer; opacity: 0.6; }
   .rst:hover { opacity: 1; }
   .rst-confirm { display: flex; gap: 8px; justify-content: center; align-items: center; }
   .rst-confirm span { font-size: 12px; color: #ef4444; }
   .rst-yes { padding: 7px 18px; border-radius: 7px; border: 1px solid rgba(239,68,68,0.15); background: rgba(239,68,68,0.06); color: #ef4444; font-size: 11px; cursor: pointer; font-weight: 700; }
   .rst-no { padding: 7px 18px; border-radius: 7px; border: 1px solid rgba(255,255,255,0.1); background: transparent; color: #888; font-size: 11px; cursor: pointer; }
+
+  /* Login screen */
+  .login-screen { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 80vh; gap: 20px; }
+  .login-screen h1 { font-size: 32px; font-weight: 700; }
+  .login-screen p { color: #888; font-size: 14px; }
+  .google-btn { display: flex; align-items: center; gap: 10px; padding: 10px 24px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.05); color: #e8e8ed; font-size: 14px; font-weight: 600; cursor: pointer; transition: all 0.2s; }
+  .google-btn:hover { background: rgba(255,255,255,0.1); }
+  .google-btn svg { width: 20px; height: 20px; }
 
   @media (min-width: 700px) {
     .list { grid-template-columns: 1fr 1fr; gap: 8px; }
@@ -142,9 +125,30 @@
 </style>
 </head>
 <body>
-<div class="app" id="app"></div>
+<div class="app" id="app"><div class="login-screen"><p>Cargando...</p></div></div>
+
+<!-- Firebase SDKs (compat for simplicity in vanilla JS) -->
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
 
 <script>
+// Firebase config
+const firebaseConfig = {
+  apiKey: "AIzaSyA38uk6xRgk7xVKFBB9LcS3N35tMhurAvw",
+  authDomain: "servicios-data.firebaseapp.com",
+  projectId: "servicios-data",
+  storageBucket: "servicios-data.firebasestorage.app",
+  messagingSenderId: "93651416151",
+  appId: "1:93651416151:web:064930c694137538a69f12"
+};
+
+firebase.initializeApp(firebaseConfig);
+const auth = firebase.auth();
+const db = firebase.firestore();
+const googleProvider = new firebase.auth.GoogleAuthProvider();
+
+// --- State ---
 const BILLS = [
   { id: "edesur", name: "Edesur", icon: "\u26A1", cat: "Electricidad", owner: "mine" },
   { id: "edesur_caro", name: "Edesur Carolina", icon: "\u26A1", cat: "Electricidad", owner: "pico" },
@@ -173,95 +177,81 @@ let tab = "list";
 let editing = null;
 let confirmReset = false;
 let pay = {}, cost = {};
-
-// GitHub sync
-let ghToken = localStorage.getItem("gh-token") || "";
-let ghRepo = localStorage.getItem("gh-repo") || "";
-let ghUser = localStorage.getItem("gh-user") || "";
-let syncStatus = "none"; // none, ok, err, loading
+let currentUser = null;
+let syncStatus = "none";
 let syncMsg = "";
-let showSetup = false;
-let fileSha = {}; // track SHA per file for updates
+let saveTimer = null;
 
-function configured() { return ghToken && ghRepo && ghUser; }
-
-// --- GitHub API ---
-async function ghRead(filename) {
-  const url = `https://api.github.com/repos/${ghUser}/${ghRepo}/contents/${filename}`;
-  const res = await fetch(url, { headers: { "Authorization": "Bearer " + ghToken, "Accept": "application/vnd.github.v3+json" } });
-  if (res.status === 404) return null;
-  if (!res.ok) throw new Error("GitHub API error: " + res.status);
-  const data = await res.json();
-  fileSha[filename] = data.sha;
-  return JSON.parse(atob(data.content));
+// --- Firestore helpers ---
+function docRef() {
+  return db.collection("users").doc(currentUser.uid).collection("years").doc(String(yr));
 }
 
-async function ghWrite(filename, content) {
-  const url = `https://api.github.com/repos/${ghUser}/${ghRepo}/contents/${filename}`;
-  const body = {
-    message: "update " + filename,
-    content: btoa(JSON.stringify(content, null, 2)),
-  };
-  if (fileSha[filename]) body.sha = fileSha[filename];
-  const res = await fetch(url, {
-    method: "PUT",
-    headers: { "Authorization": "Bearer " + ghToken, "Content-Type": "application/json", "Accept": "application/vnd.github.v3+json" },
-    body: JSON.stringify(body),
-  });
-  if (!res.ok) throw new Error("GitHub write error: " + res.status);
-  const data = await res.json();
-  fileSha[filename] = data.content.sha;
-}
-
-async function syncPull() {
-  if (!configured()) return;
-  syncStatus = "loading"; syncMsg = "Descargando..."; render();
+async function loadFromFirestore() {
+  if (!currentUser) return;
+  syncStatus = "loading"; syncMsg = "Sincronizando..."; render();
   try {
-    const p = await ghRead(`pay-${yr}.json`);
-    const c = await ghRead(`cost-${yr}.json`);
-    if (p) pay = p;
-    if (c) cost = c;
-    localStorage.setItem("svc-pay-" + yr, JSON.stringify(pay));
-    localStorage.setItem("svc-cost-" + yr, JSON.stringify(cost));
+    const snap = await docRef().get();
+    if (snap.exists) {
+      const d = snap.data();
+      pay = d.pay || {};
+      cost = d.cost || {};
+    } else {
+      pay = {}; cost = {};
+    }
     syncStatus = "ok"; syncMsg = "Sincronizado";
   } catch (e) {
-    syncStatus = "err"; syncMsg = e.message;
+    syncStatus = "err"; syncMsg = "Error: " + e.message;
+    console.error(e);
   }
   render();
 }
 
-async function syncPush() {
-  if (!configured()) return;
-  syncStatus = "loading"; syncMsg = "Guardando..."; render();
+async function saveToFirestore() {
+  if (!currentUser) return;
+  syncStatus = "loading"; syncMsg = "Guardando..."; renderSyncOnly();
   try {
-    await ghWrite(`pay-${yr}.json`, pay);
-    await ghWrite(`cost-${yr}.json`, cost);
+    await docRef().set({ pay, cost }, { merge: true });
     syncStatus = "ok"; syncMsg = "Guardado";
   } catch (e) {
-    syncStatus = "err"; syncMsg = e.message;
+    syncStatus = "err"; syncMsg = "Error: " + e.message;
+    console.error(e);
+  }
+  renderSyncOnly();
+}
+
+function scheduleSave() {
+  clearTimeout(saveTimer);
+  saveTimer = setTimeout(() => saveToFirestore(), 1500);
+}
+
+// --- Auth ---
+auth.onAuthStateChanged(async (user) => {
+  currentUser = user;
+  if (user) {
+    await loadFromFirestore();
+  } else {
+    pay = {}; cost = {};
   }
   render();
+});
+
+function loginGoogle() {
+  auth.signInWithPopup(googleProvider).catch(e => {
+    // Try redirect if popup blocked (mobile)
+    if (e.code === 'auth/popup-blocked' || e.code === 'auth/cancelled-popup-request') {
+      auth.signInWithRedirect(googleProvider);
+    } else {
+      alert("Error: " + e.message);
+    }
+  });
 }
 
-// Debounced push
-let pushTimer = null;
-function schedulePush() {
-  clearTimeout(pushTimer);
-  pushTimer = setTimeout(() => syncPush(), 2000);
+function logout() {
+  auth.signOut();
 }
 
-// --- Data ---
-function loadLocal() {
-  try { pay = JSON.parse(localStorage.getItem("svc-pay-" + yr)) || {}; } catch { pay = {}; }
-  try { cost = JSON.parse(localStorage.getItem("svc-cost-" + yr)) || {}; } catch { cost = {}; }
-}
-
-function saveLocal() {
-  localStorage.setItem("svc-pay-" + yr, JSON.stringify(pay));
-  localStorage.setItem("svc-cost-" + yr, JSON.stringify(cost));
-  schedulePush();
-}
-
+// --- Data helpers ---
 function fmt(n) { return "$" + Math.round(n || 0).toLocaleString("es-AR"); }
 function isPaid(id, m) { return !!pay[id + "-" + m]; }
 function gc(id, m) { return cost[id + "-" + m] || 0; }
@@ -273,141 +263,91 @@ function yrTotal(o) { let t = 0; for (let m = 0; m < 12; m++) t += moTotal(m, o)
 function toggle(id) {
   const k = id + "-" + mo;
   if (pay[k]) delete pay[k]; else pay[k] = 1;
-  saveLocal(); render();
+  scheduleSave(); render();
 }
 
 function setCostVal(id, v) {
   cost[id + "-" + mo] = v;
-  saveLocal(); editing = null; render();
+  editing = null; scheduleSave(); render();
 }
 
-// --- Setup modal ---
-function renderSetup() {
-  return `
-  <div class="modal-overlay" onclick="if(event.target===this){showSetup=false;render()}">
-    <div class="modal">
-      <h2>Configurar sync con GitHub</h2>
-      <p>Para sincronizar entre dispositivos necesitas un repo privado y un token.</p>
-      <ol>
-        <li>Crea un repo <strong>privado</strong> en GitHub (ej: <code>servicios-data</code>)</li>
-        <li>Anda a <strong>Settings → Developer settings → Personal access tokens → Tokens (classic)</strong></li>
-        <li>Genera un token con el permiso <code>repo</code></li>
-        <li>Completa los campos abajo</li>
-      </ol>
-      <label>Usuario de GitHub</label>
-      <input id="setup-user" value="${ghUser}" placeholder="tu-usuario">
-      <label>Nombre del repo privado</label>
-      <input id="setup-repo" value="${ghRepo}" placeholder="servicios-data">
-      <label>Personal Access Token</label>
-      <input id="setup-token" type="password" value="${ghToken}" placeholder="ghp_xxxxxxxxxxxx">
-      <div id="setup-err" class="modal-err"></div>
-      <div class="modal-actions">
-        <button class="modal-save" onclick="saveSetup()">Guardar y sincronizar</button>
-        <button class="modal-skip" onclick="showSetup=false;render()">Cancelar</button>
-      </div>
-    </div>
-  </div>`;
-}
-
-async function saveSetup() {
-  const u = document.getElementById("setup-user").value.trim();
-  const r = document.getElementById("setup-repo").value.trim();
-  const t = document.getElementById("setup-token").value.trim();
-  const errEl = document.getElementById("setup-err");
-  if (!u || !r || !t) { errEl.textContent = "Completa todos los campos"; return; }
-  errEl.textContent = "Verificando...";
-  try {
-    const res = await fetch(`https://api.github.com/repos/${u}/${r}`, {
-      headers: { "Authorization": "Bearer " + t, "Accept": "application/vnd.github.v3+json" }
-    });
-    if (res.status === 404) { errEl.textContent = "Repo no encontrado. Verifica usuario y nombre."; return; }
-    if (res.status === 401) { errEl.textContent = "Token invalido."; return; }
-    if (!res.ok) { errEl.textContent = "Error: " + res.status; return; }
-    const repo = await res.json();
-    if (!repo.private) { errEl.textContent = "El repo no es privado! Crealo como privado."; return; }
-  } catch (e) { errEl.textContent = "Error de conexion: " + e.message; return; }
-  ghUser = u; ghRepo = r; ghToken = t;
-  localStorage.setItem("gh-user", u);
-  localStorage.setItem("gh-repo", r);
-  localStorage.setItem("gh-token", t);
-  showSetup = false;
-  render();
-  await syncPull();
-}
-
-function disconnectSync() {
-  ghUser = ""; ghRepo = ""; ghToken = "";
-  localStorage.removeItem("gh-user");
-  localStorage.removeItem("gh-repo");
-  localStorage.removeItem("gh-token");
-  syncStatus = "none"; syncMsg = "";
-  fileSha = {};
-  render();
-}
-
-// --- Pie chart ---
+// --- Pie ---
 function renderPie(items, size) {
   const d = items.filter(x => x.v > 0);
   if (!d.length) return '<div style="color:#666;text-align:center;padding:20px;font-size:13px">Sin costos cargados</div>';
   const tot = d.reduce((s, x) => s + x.v, 0);
-  const cx = size / 2, cy = size / 2, r = size * 0.38;
+  const cx = size/2, cy = size/2, r = size*0.38;
   let cum = 0, paths = "";
   if (d.length === 1) {
     paths = `<circle cx="${cx}" cy="${cy}" r="${r}" fill="${d[0].c}"/>`;
   } else {
     d.forEach(x => {
-      const a1 = (cum / tot) * Math.PI * 2 - Math.PI / 2;
+      const a1 = (cum/tot)*Math.PI*2 - Math.PI/2;
       cum += x.v;
-      const a2 = (cum / tot) * Math.PI * 2 - Math.PI / 2;
-      const lg = a2 - a1 > Math.PI ? 1 : 0;
-      paths += `<path d="M${cx},${cy} L${cx + r * Math.cos(a1)},${cy + r * Math.sin(a1)} A${r},${r} 0 ${lg} 1 ${cx + r * Math.cos(a2)},${cy + r * Math.sin(a2)} Z" fill="${x.c}" stroke="#1a1d27" stroke-width="1.5"/>`;
+      const a2 = (cum/tot)*Math.PI*2 - Math.PI/2;
+      const lg = a2-a1 > Math.PI ? 1 : 0;
+      paths += `<path d="M${cx},${cy} L${cx+r*Math.cos(a1)},${cy+r*Math.sin(a1)} A${r},${r} 0 ${lg} 1 ${cx+r*Math.cos(a2)},${cy+r*Math.sin(a2)} Z" fill="${x.c}" stroke="#1a1d27" stroke-width="1.5"/>`;
     });
   }
   const legend = d.map(x => {
-    const pct = ((x.v / tot) * 100).toFixed(1);
+    const pct = ((x.v/tot)*100).toFixed(1);
     return `<div class="legend-item"><div class="legend-dot" style="background:${x.c}"></div><span>${x.l} ${pct}%</span></div>`;
   }).join("");
   return `
     <svg width="${size}" height="${size}" viewBox="0 0 ${size} ${size}">
       ${paths}
-      <circle cx="${cx}" cy="${cy}" r="${r * 0.5}" fill="#1a1d27"/>
-      <text x="${cx}" y="${cy - 4}" text-anchor="middle" fill="#e8e8ed" font-size="14" font-weight="700">${fmt(tot)}</text>
-      <text x="${cx}" y="${cy + 12}" text-anchor="middle" fill="#666" font-size="9">total mes</text>
+      <circle cx="${cx}" cy="${cy}" r="${r*0.5}" fill="#1a1d27"/>
+      <text x="${cx}" y="${cy-4}" text-anchor="middle" fill="#e8e8ed" font-size="14" font-weight="700">${fmt(tot)}</text>
+      <text x="${cx}" y="${cy+12}" text-anchor="middle" fill="#666" font-size="9">total mes</text>
     </svg>
     <div class="legend">${legend}</div>`;
 }
 
-// --- Main render ---
+// Partial render for sync indicator only
+function renderSyncOnly() {
+  const el = document.getElementById("sync-status");
+  if (el) {
+    const dotClass = syncStatus === "ok" ? "ok" : syncStatus === "err" ? "err" : "loading";
+    el.innerHTML = `<span class="sync-dot ${dotClass}"></span>${syncMsg}`;
+  }
+}
+
+// --- Render ---
 function render() {
+  // Not logged in
+  if (!currentUser) {
+    document.getElementById("app").innerHTML = `
+      <div class="login-screen">
+        <h1>Servicios</h1>
+        <p>Inicia sesion para sincronizar entre dispositivos</p>
+        <button class="google-btn" onclick="loginGoogle()">
+          <svg viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.77h3.57c2.08-1.92 3.27-4.74 3.27-8.1z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
+          Iniciar con Google
+        </button>
+      </div>`;
+    return;
+  }
+
   const bl = bills();
   const paidN = bl.filter(b => isPaid(b.id, mo)).length;
   const pct = bl.length ? (paidN / bl.length) * 100 : 0;
   const pcolor = pct === 100 ? "#22c55e" : pct > 50 ? "#eab308" : "#ef4444";
+  const dotClass = syncStatus === "ok" ? "ok" : syncStatus === "err" ? "err" : syncStatus === "loading" ? "loading" : "ok";
 
-  let html = "";
-
-  // Sync bar
-  html += `<div class="sync-bar">`;
-  if (configured()) {
-    const dotClass = syncStatus === "ok" ? "ok" : syncStatus === "err" ? "err" : syncStatus === "loading" ? "loading" : "ok";
-    html += `<div class="sync-dot ${dotClass}"></div>`;
-    html += `<span>${syncMsg || ghUser + "/" + ghRepo}</span>`;
-    html += `<button class="sync-btn" onclick="syncPull()">pull</button>`;
-    html += `<button class="sync-btn" onclick="syncPush()">push</button>`;
-    html += `<button class="sync-btn" onclick="showSetup=true;render()">config</button>`;
-  } else {
-    html += `<button class="sync-btn" onclick="showSetup=true;render()">Configurar sync</button>`;
-  }
-  html += `</div>`;
-
-  html += `
+  let html = `
+  <div class="auth-bar">
+    <span id="sync-status"><span class="sync-dot ${dotClass}"></span>${syncMsg}</span>
+    <img src="${currentUser.photoURL || ''}" alt="" onerror="this.style.display='none'">
+    <span>${currentUser.displayName || currentUser.email}</span>
+    <button class="auth-btn out" onclick="logout()">Salir</button>
+  </div>
   <div class="hdr">
     <div class="hdr-top">
       <h1 class="ttl">Servicios</h1>
       <div class="ynav">
-        <button class="ybtn" onclick="yr--;loadLocal();if(configured())syncPull();else render()">&#8249;</button>
+        <button class="ybtn" onclick="yr--;loadFromFirestore()">&#8249;</button>
         <span class="ylbl">${yr}</span>
-        <button class="ybtn" onclick="yr++;loadLocal();if(configured())syncPull();else render()">&#8250;</button>
+        <button class="ybtn" onclick="yr++;loadFromFirestore()">&#8250;</button>
       </div>
     </div>
     <div class="frow">
@@ -416,21 +356,19 @@ function render() {
       ).join("")}
     </div>
     <div class="mrow">
-      ${MO.map((m, i) =>
+      ${MO.map((m,i) =>
         `<button class="mbtn${mo===i?" on":""}" onclick="mo=${i};render()">${m}</button>`
       ).join("")}
     </div>
   </div>
-
   <div class="prog">
     <div class="prog-top">
       <span class="prog-lbl">${MOF[mo]} ${yr}</span>
       <span class="prog-num">${paidN}/${bl.length}</span>
     </div>
     <div class="pbar"><div class="pfill" style="width:${pct}%;background:${pcolor}"></div></div>
-    ${pct === 100 ? '<div class="done">Todo pago &#10003;</div>' : ''}
+    ${pct===100?'<div class="done">Todo pago &#10003;</div>':''}
   </div>
-
   <div class="tabs">
     ${[["list","Lista"],["chart","Grafico"],["totals","Totales"]].map(([k,l]) =>
       `<button class="tab${tab===k?" on":""}" onclick="tab='${k}';render()">${l}</button>`
@@ -452,8 +390,8 @@ function render() {
             </div>
           </div>
           <div class="card-r">
-            ${c > 0 ? `<span class="cost-badge">${fmt(c)}</span>` : ''}
-            <div class="chk${p?" on":""}">${p ? "\u2713" : ""}</div>
+            ${c>0?`<span class="cost-badge">${fmt(c)}</span>`:''}
+            <div class="chk${p?" on":""}">${p?"\u2713":""}</div>
           </div>
         </div>
         <div class="cost-row">
@@ -467,7 +405,7 @@ function render() {
             </div>
           ` : `
             <button class="cedit" onclick="event.stopPropagation();editing='${b.id}';render();setTimeout(()=>{const el=document.getElementById('cinp-${b.id}');if(el)el.focus()},50)">
-              ${c > 0 ? 'Editar monto' : '+ Agregar monto'}
+              ${c>0?'Editar monto':'+ Agregar monto'}
             </button>
           `}
         </div>
@@ -477,7 +415,7 @@ function render() {
   }
 
   if (tab === "chart") {
-    const pieItems = bl.map((b, i) => ({ l: b.name + (b.owner === "pico" ? " (M)" : ""), v: gc(b.id, mo), c: COLORS[i % COLORS.length] }));
+    const pieItems = bl.map((b,i) => ({l:b.name+(b.owner==="pico"?" (M)":""),v:gc(b.id,mo),c:COLORS[i%COLORS.length]}));
     html += `
     <div class="chart-sec">
       ${renderPie(pieItems, 200)}
@@ -485,7 +423,7 @@ function render() {
         ${[["Mios","mine",""],["Mama","pico",""],["Total","all","total"]].map(([l,o,cls]) =>
           `<div class="scard${cls?' total':''}">
             <div class="scard-lbl">${l}</div>
-            <div class="scard-val">${fmt(moTotal(mo, o))}</div>
+            <div class="scard-val">${fmt(moTotal(mo,o))}</div>
           </div>`
         ).join("")}
       </div>
@@ -500,7 +438,7 @@ function render() {
         ${bl.map(b => `
           <div class="trow">
             <span class="trow-name">${b.icon} ${b.name}${b.owner==="pico"?" (M)":""}</span>
-            <span class="trow-val">${fmt(runTotal(b.id, mo))}</span>
+            <span class="trow-val">${fmt(runTotal(b.id,mo))}</span>
           </div>
         `).join("")}
       </div>
@@ -513,7 +451,6 @@ function render() {
     </div>`;
   }
 
-  // Footer
   html += `<div class="footer">`;
   if (confirmReset) {
     html += `
@@ -524,27 +461,16 @@ function render() {
       </div>`;
   } else {
     html += `<button class="rst" onclick="confirmReset=true;render()">Resetear ${MO[mo]}</button>`;
-    if (configured()) {
-      html += `<button class="rst" style="color:#888;border-color:rgba(255,255,255,0.08)" onclick="disconnectSync()">Desconectar sync</button>`;
-    }
   }
   html += `</div>`;
-
-  // Setup modal
-  if (showSetup) html += renderSetup();
 
   document.getElementById("app").innerHTML = html;
 }
 
 function resetMonth() {
-  BILLS.forEach(b => { delete pay[b.id + "-" + mo]; delete cost[b.id + "-" + mo]; });
-  saveLocal(); confirmReset = false; render();
+  BILLS.forEach(b => { delete pay[b.id+"-"+mo]; delete cost[b.id+"-"+mo]; });
+  confirmReset = false; scheduleSave(); render();
 }
-
-// Init
-loadLocal();
-render();
-if (configured()) syncPull();
 </script>
 </body>
 </html>
