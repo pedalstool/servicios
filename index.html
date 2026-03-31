@@ -214,7 +214,7 @@ async function saveToFirestore() {
   if (!currentUser) return;
   syncStatus = "loading"; syncMsg = "Guardando..."; renderSyncOnly();
   try {
-    await docRef().set({ pay, cost }, { merge: true });
+    await docRef().set({ pay, cost });
     syncStatus = "ok"; syncMsg = "Guardado";
   } catch (e) {
     syncStatus = "err"; syncMsg = "Error: " + e.message;
@@ -225,8 +225,18 @@ async function saveToFirestore() {
 
 function scheduleSave() {
   clearTimeout(saveTimer);
-  saveTimer = setTimeout(() => saveToFirestore(), 1500);
+  saveTimer = setTimeout(() => saveToFirestore(), 800);
 }
+
+// Flush pending save when leaving the page
+window.addEventListener("beforeunload", () => {
+  if (saveTimer) {
+    clearTimeout(saveTimer);
+    // Use synchronous-ish save via sendBeacon is not possible with Firestore
+    // So we do a best-effort save
+    saveToFirestore();
+  }
+});
 
 // --- Auth ---
 auth.onAuthStateChanged(async (user) => {
