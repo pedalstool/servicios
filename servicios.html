@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Servicios</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: system-ui, -apple-system, sans-serif; background: #0f1117; color: #e8e8ed; min-height: 100vh; }
+  .app { max-width: 1100px; margin: 0 auto; padding: 0 16px; }
+  
+  /* Header */
+  .hdr { padding: 20px 0 10px; position: sticky; top: 0; z-index: 10; background: #0f1117; }
+  .hdr-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; }
+  .ttl { font-size: 28px; font-weight: 700; }
+  .ynav { display: flex; align-items: center; gap: 10px; }
+  .ybtn { background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.08); color: #ccc; width: 32px; height: 32px; border-radius: 6px; font-size: 18px; cursor: pointer; }
+  .ybtn:hover { background: rgba(255,255,255,0.1); }
+  .ylbl { font-size: 16px; font-weight: 600; color: #ccc; }
+  
+  /* Filters */
+  .frow { display: flex; gap: 8px; margin-bottom: 12px; }
+  .fbtn { padding: 6px 16px; border-radius: 16px; border: 1px solid rgba(255,255,255,0.08); background: rgba(255,255,255,0.04); color: #888; font-size: 13px; font-weight: 500; cursor: pointer; transition: all 0.2s; }
+  .fbtn:hover { background: rgba(255,255,255,0.08); }
+  .fbtn.on { background: rgba(99,102,241,0.15); border-color: rgba(99,102,241,0.3); color: #a5b4fc; }
+  
+  /* Months */
+  .mrow { display: grid; grid-template-columns: repeat(12, 1fr); gap: 3px; }
+  .mbtn { padding: 8px 0; border: none; background: transparent; color: #555; font-size: 12px; font-weight: 500; cursor: pointer; border-radius: 6px; transition: all 0.15s; }
+  .mbtn:hover { background: rgba(255,255,255,0.05); color: #999; }
+  .mbtn.on { background: rgba(99,102,241,0.2); color: #a5b4fc; font-weight: 700; }
+  
+  /* Progress */
+  .prog { padding: 18px 0 6px; }
+  .prog-top { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 8px; }
+  .prog-lbl { font-size: 16px; font-weight: 600; color: #bbb; }
+  .prog-num { font-size: 22px; font-weight: 700; }
+  .pbar { height: 6px; border-radius: 3px; background: rgba(255,255,255,0.06); overflow: hidden; }
+  .pfill { height: 100%; border-radius: 3px; transition: width 0.3s; }
+  .done { color: #22c55e; text-align: center; font-size: 13px; font-weight: 600; margin-top: 8px; }
+  
+  /* Tabs */
+  .tabs { display: flex; gap: 6px; padding: 10px 0; }
+  .tab { padding: 7px 18px; border-radius: 7px; border: 1px solid rgba(255,255,255,0.06); background: rgba(255,255,255,0.02); color: #666; font-size: 13px; font-weight: 500; cursor: pointer; transition: all 0.2s; }
+  .tab:hover { background: rgba(255,255,255,0.05); }
+  .tab.on { background: rgba(99,102,241,0.12); border-color: rgba(99,102,241,0.25); color: #a5b4fc; font-weight: 600; }
+  
+  /* Cards - responsive grid */
+  .list { padding: 6px 0; display: grid; grid-template-columns: 1fr; gap: 6px; }
+  .card { border-radius: 10px; border: 1px solid rgba(255,255,255,0.06); background: rgba(255,255,255,0.03); overflow: hidden; transition: border-color 0.2s; }
+  .card:hover { border-color: rgba(255,255,255,0.12); }
+  .card.paid { background: rgba(34,197,94,0.06); border-color: rgba(34,197,94,0.15); }
+  .card-main { display: flex; align-items: center; justify-content: space-between; padding: 12px 12px 6px; cursor: pointer; }
+  .card-l { display: flex; align-items: center; gap: 10px; }
+  .ico { font-size: 20px; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; border-radius: 8px; background: rgba(255,255,255,0.04); }
+  .bname { font-size: 13px; font-weight: 600; color: #e0e0e5; display: flex; align-items: center; gap: 6px; }
+  .bcat { font-size: 11px; color: #666; }
+  .ptag { font-size: 9px; font-weight: 600; padding: 1px 6px; border-radius: 5px; background: rgba(244,114,182,0.12); color: #f472b6; }
+  .card-r { display: flex; align-items: center; gap: 8px; }
+  .cost-badge { font-size: 13px; font-weight: 600; color: #a5b4fc; }
+  .chk { width: 24px; height: 24px; border-radius: 7px; border: 2px solid rgba(255,255,255,0.12); display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; color: #fff; }
+  .chk.on { background: #22c55e; border-color: #22c55e; }
+  
+  /* Cost editing */
+  .cost-row { padding: 0 12px 8px; }
+  .cedit { background: none; border: none; color: #555; font-size: 10px; cursor: pointer; padding: 2px 0; }
+  .cost-form { display: flex; gap: 6px; align-items: center; }
+  .cost-form span { color: #888; font-weight: 600; }
+  .cinp { width: 100px; padding: 4px 6px; border-radius: 5px; border: 1px solid rgba(99,102,241,0.3); background: rgba(99,102,241,0.08); color: #e8e8ed; font-size: 13px; font-weight: 600; outline: none; }
+  .csave { padding: 4px 10px; border-radius: 5px; border: none; background: rgba(34,197,94,0.15); color: #22c55e; font-size: 12px; cursor: pointer; font-weight: 600; }
+  .ccancel { padding: 4px 8px; border-radius: 5px; border: none; background: rgba(239,68,68,0.1); color: #ef4444; font-size: 12px; cursor: pointer; }
+  
+  /* Chart */
+  .chart-sec { padding: 16px 0; display: flex; flex-direction: column; gap: 16px; align-items: center; }
+  .legend { display: flex; flex-wrap: wrap; gap: 5px; justify-content: center; max-width: 300px; }
+  .legend-item { display: flex; align-items: center; gap: 3px; font-size: 10px; color: #aaa; }
+  .legend-dot { width: 7px; height: 7px; border-radius: 2px; flex-shrink: 0; }
+  .summary { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; width: 100%; max-width: 500px; }
+  .scard { padding: 14px; border-radius: 10px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06); text-align: center; }
+  .scard.total { background: rgba(99,102,241,0.06); border-color: rgba(99,102,241,0.15); }
+  .scard-lbl { font-size: 12px; color: #777; }
+  .scard-val { font-size: 17px; font-weight: 700; margin-top: 4px; }
+  
+  /* Totals */
+  .totals-sec { padding: 12px 0; display: flex; flex-direction: column; gap: 14px; }
+  .tgrp { padding: 14px; border-radius: 10px; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.06); }
+  .tgtitle { font-size: 12px; font-weight: 600; color: #888; margin-bottom: 10px; }
+  .trow { display: flex; justify-content: space-between; align-items: center; padding: 6px 0; font-size: 14px; }
+  .trow-name { color: #bbb; }
+  .trow-val { font-weight: 600; color: #e0e0e5; }
+  .trow.grand { border-top: 1px solid rgba(255,255,255,0.08); padding-top: 8px; margin-top: 4px; }
+  .trow.grand .trow-name { font-weight: 700; color: #e8e8ed; }
+  .trow.grand .trow-val { font-weight: 700; color: #6366f1; }
+  
+  /* Reset */
+  .footer { padding: 20px 0 30px; text-align: center; }
+  .rst { padding: 7px 18px; border-radius: 7px; border: 1px solid rgba(239,68,68,0.15); background: rgba(239,68,68,0.06); color: #ef4444; font-size: 11px; cursor: pointer; opacity: 0.6; }
+  .rst:hover { opacity: 1; }
+  .rst-confirm { display: flex; gap: 8px; justify-content: center; align-items: center; }
+  .rst-confirm span { font-size: 12px; color: #ef4444; }
+  .rst-yes { padding: 7px 18px; border-radius: 7px; border: 1px solid rgba(239,68,68,0.15); background: rgba(239,68,68,0.06); color: #ef4444; font-size: 11px; cursor: pointer; font-weight: 700; }
+  .rst-no { padding: 7px 18px; border-radius: 7px; border: 1px solid rgba(255,255,255,0.1); background: transparent; color: #888; font-size: 11px; cursor: pointer; }
+  
+  .hidden { display: none; }
+
+  /* Desktop: 2 columns for cards at 700px+ */
+  @media (min-width: 700px) {
+    .list { grid-template-columns: 1fr 1fr; gap: 8px; }
+    .chart-sec { flex-direction: row; align-items: flex-start; justify-content: center; gap: 32px; }
+    .summary { max-width: none; }
+    .totals-sec { flex-direction: row; }
+    .totals-sec .tgrp { flex: 1; }
+  }
+
+  /* Wider desktop: 3 columns at 1000px+ */
+  @media (min-width: 1000px) {
+    .list { grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
+    .ttl { font-size: 32px; }
+    .mbtn { font-size: 13px; padding: 10px 0; }
+  }
+</style>
+</head>
+<body>
+<div class="app" id="app"></div>
+
+<script>
+const BILLS = [
+  { id: "edesur", name: "Edesur", icon: "\u26A1", cat: "Electricidad", owner: "mine" },
+  { id: "edesur_caro", name: "Edesur Carolina", icon: "\u26A1", cat: "Electricidad", owner: "pico" },
+  { id: "edesur_pico", name: "Edesur Pico", icon: "\u26A1", cat: "Electricidad", owner: "pico" },
+  { id: "metrogas", name: "Metrogas", icon: "\uD83D\uDD25", cat: "Gas", owner: "mine" },
+  { id: "metrogas_pico", name: "Metrogas", icon: "\uD83D\uDD25", cat: "Gas", owner: "pico" },
+  { id: "aysa", name: "AYSA", icon: "\uD83D\uDCA7", cat: "Agua", owner: "mine" },
+  { id: "aysa_pico", name: "AYSA", icon: "\uD83D\uDCA7", cat: "Agua", owner: "pico" },
+  { id: "arba", name: "ARBA", icon: "\uD83C\uDFE0", cat: "Impuesto", owner: "mine" },
+  { id: "arba_pico", name: "ARBA", icon: "\uD83C\uDFE0", cat: "Impuesto", owner: "pico" },
+  { id: "tsg", name: "TSG", icon: "\uD83C\uDFDB\uFE0F", cat: "Tasa", owner: "mine" },
+  { id: "tsg_pico", name: "TSG", icon: "\uD83C\uDFDB\uFE0F", cat: "Tasa", owner: "pico" },
+  { id: "patente", name: "Patente", icon: "\uD83D\uDE97", cat: "Vehiculo", owner: "mine" },
+  { id: "plan_pat", name: "Plan pagos patente", icon: "\uD83D\uDCCB", cat: "Vehiculo", owner: "mine" },
+];
+
+const MO = ["Ene","Feb","Mar","Abr","May","Jun","Jul","Ago","Sep","Oct","Nov","Dic"];
+const MOF = ["Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"];
+const COLORS = ["#6366f1","#f472b6","#22c55e","#eab308","#ef4444","#06b6d4","#a855f7","#f97316","#14b8a6","#e879f9","#84cc16","#fb923c","#38bdf8"];
+
+const now = new Date();
+let yr = now.getFullYear();
+let mo = now.getMonth();
+let flt = "all";
+let tab = "list";
+let editing = null;
+let confirmReset = false;
+let pay = {}, cost = {};
+
+function loadData() {
+  try { pay = JSON.parse(localStorage.getItem("svc-pay-" + yr)) || {}; } catch { pay = {}; }
+  try { cost = JSON.parse(localStorage.getItem("svc-cost-" + yr)) || {}; } catch { cost = {}; }
+}
+
+function saveData() {
+  localStorage.setItem("svc-pay-" + yr, JSON.stringify(pay));
+  localStorage.setItem("svc-cost-" + yr, JSON.stringify(cost));
+}
+
+function fmt(n) { return "$" + Math.round(n || 0).toLocaleString("es-AR"); }
+function isPaid(id, m) { return !!pay[id + "-" + m]; }
+function gc(id, m) { return cost[id + "-" + m] || 0; }
+function bills() { return BILLS.filter(b => flt === "all" || b.owner === flt); }
+function moTotal(m, o) { return BILLS.filter(b => o === "all" || b.owner === o).reduce((s, b) => s + gc(b.id, m), 0); }
+function runTotal(id, m) { let t = 0; for (let i = 0; i <= m; i++) t += gc(id, i); return t; }
+function yrTotal(o) { let t = 0; for (let m = 0; m < 12; m++) t += moTotal(m, o); return t; }
+
+function toggle(id) {
+  const k = id + "-" + mo;
+  if (pay[k]) delete pay[k]; else pay[k] = 1;
+  saveData(); render();
+}
+
+function setCostVal(id, v) {
+  cost[id + "-" + mo] = v;
+  saveData(); editing = null; render();
+}
+
+function renderPie(items, size) {
+  const d = items.filter(x => x.v > 0);
+  if (!d.length) return '<div style="color:#666;text-align:center;padding:20px;font-size:13px">Sin costos cargados</div>';
+  const tot = d.reduce((s, x) => s + x.v, 0);
+  const cx = size / 2, cy = size / 2, r = size * 0.38;
+  let cum = 0, paths = "";
+  if (d.length === 1) {
+    paths = `<circle cx="${cx}" cy="${cy}" r="${r}" fill="${d[0].c}"/>`;
+  } else {
+    d.forEach(x => {
+      const a1 = (cum / tot) * Math.PI * 2 - Math.PI / 2;
+      cum += x.v;
+      const a2 = (cum / tot) * Math.PI * 2 - Math.PI / 2;
+      const lg = a2 - a1 > Math.PI ? 1 : 0;
+      paths += `<path d="M${cx},${cy} L${cx + r * Math.cos(a1)},${cy + r * Math.sin(a1)} A${r},${r} 0 ${lg} 1 ${cx + r * Math.cos(a2)},${cy + r * Math.sin(a2)} Z" fill="${x.c}" stroke="#1a1d27" stroke-width="1.5"/>`;
+    });
+  }
+  const legend = d.map(x => {
+    const pct = ((x.v / tot) * 100).toFixed(1);
+    return `<div class="legend-item"><div class="legend-dot" style="background:${x.c}"></div><span>${x.l} ${pct}%</span></div>`;
+  }).join("");
+  return `
+    <svg width="${size}" height="${size}" viewBox="0 0 ${size} ${size}">
+      ${paths}
+      <circle cx="${cx}" cy="${cy}" r="${r * 0.5}" fill="#1a1d27"/>
+      <text x="${cx}" y="${cy - 4}" text-anchor="middle" fill="#e8e8ed" font-size="14" font-weight="700">${fmt(tot)}</text>
+      <text x="${cx}" y="${cy + 12}" text-anchor="middle" fill="#666" font-size="9">total mes</text>
+    </svg>
+    <div class="legend">${legend}</div>`;
+}
+
+function render() {
+  const bl = bills();
+  const paidN = bl.filter(b => isPaid(b.id, mo)).length;
+  const pct = bl.length ? (paidN / bl.length) * 100 : 0;
+  const pcolor = pct === 100 ? "#22c55e" : pct > 50 ? "#eab308" : "#ef4444";
+
+  let html = `
+  <div class="hdr">
+    <div class="hdr-top">
+      <h1 class="ttl">Servicios</h1>
+      <div class="ynav">
+        <button class="ybtn" onclick="yr--;loadData();render()">&#8249;</button>
+        <span class="ylbl">${yr}</span>
+        <button class="ybtn" onclick="yr++;loadData();render()">&#8250;</button>
+      </div>
+    </div>
+    <div class="frow">
+      ${[["all","Todos"],["mine","Mios"],["pico","Mama"]].map(([k,l]) =>
+        `<button class="fbtn${flt===k?" on":""}" onclick="flt='${k}';render()">${l}</button>`
+      ).join("")}
+    </div>
+    <div class="mrow">
+      ${MO.map((m, i) =>
+        `<button class="mbtn${mo===i?" on":""}" onclick="mo=${i};render()">${m}</button>`
+      ).join("")}
+    </div>
+  </div>
+
+  <div class="prog">
+    <div class="prog-top">
+      <span class="prog-lbl">${MOF[mo]} ${yr}</span>
+      <span class="prog-num">${paidN}/${bl.length}</span>
+    </div>
+    <div class="pbar"><div class="pfill" style="width:${pct}%;background:${pcolor}"></div></div>
+    ${pct === 100 ? '<div class="done">Todo pago ✓</div>' : ''}
+  </div>
+
+  <div class="tabs">
+    ${[["list","Lista"],["chart","Grafico"],["totals","Totales"]].map(([k,l]) =>
+      `<button class="tab${tab===k?" on":""}" onclick="tab='${k}';render()">${l}</button>`
+    ).join("")}
+  </div>`;
+
+  if (tab === "list") {
+    html += '<div class="list">';
+    bl.forEach(b => {
+      const p = isPaid(b.id, mo), c = gc(b.id, mo), ed = editing === b.id;
+      html += `
+      <div class="card${p?" paid":""}">
+        <div class="card-main" onclick="toggle('${b.id}')">
+          <div class="card-l">
+            <span class="ico">${b.icon}</span>
+            <div>
+              <div class="bname">${b.name}${b.owner==="pico"?'<span class="ptag">Mama</span>':''}</div>
+              <div class="bcat">${b.cat}</div>
+            </div>
+          </div>
+          <div class="card-r">
+            ${c > 0 ? `<span class="cost-badge">${fmt(c)}</span>` : ''}
+            <div class="chk${p?" on":""}">${p ? "✓" : ""}</div>
+          </div>
+        </div>
+        <div class="cost-row">
+          ${ed ? `
+            <div class="cost-form">
+              <span>$</span>
+              <input class="cinp" type="number" id="cinp-${b.id}" value="${c||''}" placeholder="0"
+                onkeydown="if(event.key==='Enter'){setCostVal('${b.id}',Number(this.value)||0)}">
+              <button class="csave" onclick="setCostVal('${b.id}',Number(document.getElementById('cinp-${b.id}').value)||0)">OK</button>
+              <button class="ccancel" onclick="editing=null;render()">X</button>
+            </div>
+          ` : `
+            <button class="cedit" onclick="event.stopPropagation();editing='${b.id}';render();setTimeout(()=>{const el=document.getElementById('cinp-${b.id}');if(el)el.focus()},50)">
+              ${c > 0 ? 'Editar monto' : '+ Agregar monto'}
+            </button>
+          `}
+        </div>
+      </div>`;
+    });
+    html += '</div>';
+  }
+
+  if (tab === "chart") {
+    const pieItems = bl.map((b, i) => ({ l: b.name + (b.owner === "pico" ? " (M)" : ""), v: gc(b.id, mo), c: COLORS[i % COLORS.length] }));
+    html += `
+    <div class="chart-sec">
+      ${renderPie(pieItems, 200)}
+      <div class="summary">
+        ${[["Mios","mine",""],["Mama","pico",""],["Total","all","total"]].map(([l,o,cls]) =>
+          `<div class="scard${cls?' total':''}">
+            <div class="scard-lbl">${l}</div>
+            <div class="scard-val">${fmt(moTotal(mo, o))}</div>
+          </div>`
+        ).join("")}
+      </div>
+    </div>`;
+  }
+
+  if (tab === "totals") {
+    html += `
+    <div class="totals-sec">
+      <div class="tgrp">
+        <div class="tgtitle">Acumulado por servicio (Ene a ${MO[mo]})</div>
+        ${bl.map(b => `
+          <div class="trow">
+            <span class="trow-name">${b.icon} ${b.name}${b.owner==="pico"?" (M)":""}</span>
+            <span class="trow-val">${fmt(runTotal(b.id, mo))}</span>
+          </div>
+        `).join("")}
+      </div>
+      <div class="tgrp">
+        <div class="tgtitle">Acumulado anual ${yr}</div>
+        <div class="trow"><span class="trow-name">Mios</span><span class="trow-val">${fmt(yrTotal("mine"))}</span></div>
+        <div class="trow"><span class="trow-name">Mama</span><span class="trow-val">${fmt(yrTotal("pico"))}</span></div>
+        <div class="trow grand"><span class="trow-name">Total</span><span class="trow-val">${fmt(yrTotal("all"))}</span></div>
+      </div>
+    </div>`;
+  }
+
+  html += `
+  <div class="footer">
+    ${confirmReset ? `
+      <div class="rst-confirm">
+        <span>Seguro?</span>
+        <button class="rst-yes" onclick="resetMonth()">Si, resetear</button>
+        <button class="rst-no" onclick="confirmReset=false;render()">Cancelar</button>
+      </div>
+    ` : `
+      <button class="rst" onclick="confirmReset=true;render()">Resetear ${MO[mo]}</button>
+    `}
+  </div>`;
+
+  document.getElementById("app").innerHTML = html;
+}
+
+function resetMonth() {
+  BILLS.forEach(b => { delete pay[b.id + "-" + mo]; delete cost[b.id + "-" + mo]; });
+  saveData(); confirmReset = false; render();
+}
+
+loadData();
+render();
+</script>
+</body>
+</html>
